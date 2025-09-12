@@ -1,0 +1,26 @@
+cmake_minimum_required(VERSION 3.10)
+project(ASCII-Tetris C)
+
+
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+
+
+set(SOURCES
+    main.c
+    tetris.c
+    console.c
+)
+
+
+add_executable(ascii-tetris ${SOURCES})
+
+# Добавляем include директории для заголовочных файлов
+target_include_directories(ascii-tetris PRIVATE .)
+
+
+if(UNIX AND NOT APPLE)
+    find_package(Curses REQUIRED)
+    target_link_libraries(ascii-tetris ${CURSES_LIBRARIES})
+    target_include_directories(ascii-tetris PRIVATE ${CURSES_INCLUDE_DIR})
+endif()
