@@ -15,7 +15,7 @@ set(SOURCES
 
 add_executable(ascii-tetris ${SOURCES})
 
-# Добавляем include директории для заголовочных файлов
+
 target_include_directories(ascii-tetris PRIVATE .)
 
 
