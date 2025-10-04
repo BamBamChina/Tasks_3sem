@@ -11,15 +11,15 @@ public:
 class Dice : public Base {
 public:
     Dice(unsigned max, unsigned seed) 
-        : max(max), dstr(1, max), reng(seed) {}
+        : max(max), dstr(1, max), reng(seed) {} //инициализируем максимальное значение, распределение и случайную генерацию
     
-    unsigned roll() override {
-        return dstr(reng);
+    unsigned roll() override { //реализация броска
+        return dstr(reng); //случайное число
     }
 
 private:
     unsigned max;
-    std::uniform_int_distribution<unsigned> dstr;
+    std::uniform_int_distribution<unsigned> dstr; 
     std::default_random_engine reng;
 };
 
@@ -31,14 +31,14 @@ public:
           dice3(std::make_unique<Dice>(max, seed3)) {}
 
     unsigned roll() override {
-        return dice1->roll() + dice2->roll() + dice3->roll();
+        return dice1->roll() + dice2->roll() + dice3->roll(); //возвращает сумму бросков
     }
 
 private:
     std::unique_ptr<Dice> dice1, dice2, dice3;
 };
 
-double expected_value(Base& r, unsigned number_of_rolls = 1000) {
+double expected_value(Base& r, unsigned number_of_rolls = 1000) { //принимает ссылку на объект r и кол-во бросков
     unsigned long long accum = 0; //считаем сумму всех бросков
     for (unsigned cnt = 0; cnt != number_of_rolls; ++cnt) {
         accum += r.roll();
