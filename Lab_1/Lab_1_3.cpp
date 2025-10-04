@@ -42,7 +42,7 @@ private:
     std::unique_ptr<Dice> dice1, dice2, dice3;
 };
 
-// Используем виртуальное наследование для избежания проблемы "ромбовидного наследования"
+
 class PenaltyDice : virtual public Base {   
 public:
     PenaltyDice(Base& dice) : dice(dice) {}
@@ -77,27 +77,15 @@ private:
 class DoubleDice : public PenaltyDice, public BonusDice {
 public:
     DoubleDice(Dice& dice) 
-        : Base(), PenaltyDice(dice), BonusDice(dice), dice(dice) {}
+        : Base(), PenaltyDice(dice), BonusDice(dice), dice(dice) {} //вызываем конструктор Base, тк наследование виртуаальное
     
-    // Явно указываем, какой метод roll использовать
+    //указываем, какой метод roll использовать
     unsigned roll() override {
         return (PenaltyDice::roll() + BonusDice::roll()) / 2;
     }
 
 private:
     Dice& dice;
-};
-
-// Альтернативная реализация с множественным наследованием (более простая)
-class DoubleDiceSimple : public PenaltyDice, public BonusDice {
-public:
-    DoubleDiceSimple(Dice& dice) 
-        : Base(), PenaltyDice(dice), BonusDice(dice) {}
-    
-    unsigned roll() override {
-        // Просто вызываем метод одного из родителей
-        return PenaltyDice::roll();
-    }
 };
 
 // Реализация без множественного наследования
@@ -150,7 +138,6 @@ void print_histogram(Base& d, unsigned min_value, unsigned max_value,
         double prob = value_probability(value, d, number_of_rolls);
         std::cout << value << ": " << prob;
         
-        // Визуализация гистограммы (упрощенная версия)
         int bars = static_cast<int>(prob * 200);
         std::cout << " ";
         for (int i = 0; i < bars; ++i) {
@@ -228,10 +215,6 @@ int main() {
     std::cout << "\nГистограммы для DoubleDice [1,100]:\n";
     print_histogram(double_dice, 1, 20, 10000, "DoubleDice (с наследованием) первые 20 значений");
     print_histogram(double_dice_no_mi, 1, 20, 10000, "DoubleDice (без наследования) первые 20 значений");
-    
-    // Тестирование простой версии
-    DoubleDiceSimple double_dice_simple(d100);
-    std::cout << "Простая версия (только штраф): " << expected_value(double_dice_simple, 10000) << std::endl;
     
     return 0;
 }
