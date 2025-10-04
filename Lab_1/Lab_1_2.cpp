@@ -58,7 +58,7 @@ private:
 
 class BonusDice : public Base {
 public:
-    BonusDice(Base& dice) : dice(dice) {}
+    BonusDice(Base& dice) : dice(dice) {} 
     
     unsigned roll() override {
         unsigned roll1 = dice.roll();
@@ -81,7 +81,7 @@ double expected_value(Base& r, unsigned number_of_rolls = 1000) {
 double value_probability(unsigned value, Base& d, unsigned number_of_rolls = 10000) {
     unsigned count = 0;
     for (unsigned cnt = 0; cnt != number_of_rolls; ++cnt) { //Цикл по всем броскам
-        if (d.roll() == value) {
+        if (d.roll() == value) { //если выпало нужное значение, то увеличиваем счетчик
             ++count;
         }
     }
@@ -91,12 +91,12 @@ double value_probability(unsigned value, Base& d, unsigned number_of_rolls = 100
 void print_histogram(Base& d, unsigned min_value, unsigned max_value, 
                     unsigned number_of_rolls = 10000, const std::string& label = "") {
     std::cout << "Гистограмма " << label << ":\n";
-    for (unsigned value = min_value; value <= max_value; ++value) {
+    for (unsigned value = min_value; value <= max_value; ++value) { //для каждого значения из диапазона вычисляем вероятность его выпадения
         double prob = value_probability(value, d, number_of_rolls);
         std::cout << value << ": " << prob;
         
-        // Визуализация гистограммы
-        int bars = static_cast<int>(prob * 200); // Масштабируем для лучшей визуализации
+        //визуализация гистограммы
+        int bars = static_cast<int>(prob * 200); //масштабируем
         for (int i = 0; i < bars; ++i) {
             std::cout << "*";
         }
