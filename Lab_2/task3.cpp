@@ -2,11 +2,11 @@
 #include <vector>
 #include <memory>
 
-// Базовый случай: сетка размерности 1
+//сетка размерности 1
 template<typename T, size_t Dim>
 class Grid;
 
-// Специализация для Dim = 1
+//специализация для dim = 1
 template<typename T>
 class Grid<T, 1> {
 public:
@@ -74,7 +74,7 @@ public:
     size_type size() const { return size_; }
 };
 
-//общий случай: сетка размерности Dim > 1
+//сетка большей размерности
 template<typename T, size_t Dim>
 class Grid {
 public:
