@@ -12,16 +12,12 @@ private:
 
     //вспомогательный класс для реализации g[y][x]
     class RowProxy {
-        T* row_start;
-        size_type row_length;
+        T* row_start; //указатель на начало строки в массиве data
+        size_type row_length; //длина сстроки
     public:
         RowProxy(T* start, size_type length) : row_start(start), row_length(length) {}
         
         T& operator[](size_type x_idx) {
-            return row_start[x_idx];
-        }
-        
-        const T& operator[](size_type x_idx) const {
             return row_start[x_idx];
         }
     };
@@ -99,7 +95,7 @@ public:
         return *this;
     }
 
-    //операторы доступа к элементам через круглые скобк
+    //операторы доступа к элементам через круглые скобки
     T operator()(size_type y_idx, size_type x_idx) const {
         return data[y_idx * x_size + x_idx];
     }
@@ -110,7 +106,7 @@ public:
 
     //операторы индексирования через квадратные скобки 
     RowProxy operator[](size_type y_idx) {
-        return RowProxy(data + y_idx * x_size, x_size);
+        return RowProxy(data + y_idx * x_size, x_size); //вычисляем указатель на начало строки y_idx
     }
     
     ConstRowProxy operator[](size_type y_idx) const {
@@ -142,17 +138,14 @@ int main() {
 
     using gsize_t = Grid<float>::size_type;
 
-    //проверка чтения через [][]
     for (gsize_t y_idx = 0; y_idx != g.get_y_size(); ++y_idx)
         for (gsize_t x_idx = 0; x_idx != g.get_x_size(); ++x_idx)
             assert(0.0f == g[y_idx][x_idx]);
 
-    //проверка записи через [][]
     for (gsize_t y_idx = 0; y_idx != g.get_y_size(); ++y_idx)
         for (gsize_t x_idx = 0; x_idx != g.get_x_size(); ++x_idx)
             g[y_idx][x_idx] = 1.0f;
 
-    //проверка через () что значения изменились
     for (gsize_t y_idx = 0; y_idx != g.get_y_size(); ++y_idx)
         for (gsize_t x_idx = 0; x_idx != g.get_x_size(); ++x_idx)
             assert(1.0f == g(y_idx, x_idx));
