@@ -49,7 +49,7 @@ public:
     }
 
     //конструктор перемещения
-    Grid(Grid&& other) noexcept 
+    Grid(Grid&& other) noexcept //noexcept для оптимизации
         : data(other.data), y_size(other.y_size), x_size(other.x_size) {
         other.data = nullptr; //обнуляем исходный объект
         other.y_size = 0;
